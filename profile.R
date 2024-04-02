@@ -1,7 +1,6 @@
 Rprof()
 start <- Sys.time()
 
-setwd("C:/Users/Jeb Gary/Documents/UT Documents/BZAN 583/HW/HW2")
 dataold <- read.csv("Email Records.csv")
 dataold <- dataold[1:10000,]
 dataold <- dataold[,c("E.Mail"),drop = FALSE]
