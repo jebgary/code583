@@ -1,20 +1,12 @@
 Rprof()
 start <- Sys.time()
 
-dataold <- read.csv("Email Records.csv")
-dataold <- dataold[1:10000,]
-dataold <- dataold[,c("E.Mail"),drop = FALSE]
-dataold$First_Name <- NA
-dataold$Last_Name <- NA
-dataold$Domain <- NA
-for (i in 1:nrow(dataold)) {
-  email_parts <- unlist(strsplit(dataold$E.Mail[i], "@"))
-  name_parts <- unlist(strsplit(email_parts[1], "\\."))
-  dataold$First_Name[i] <- name_parts[1]
-  dataold$Last_Name[i] <- name_parts[length(name_parts)] 
-  dataold$Domain[i] <- email_parts[2]
-}
-
+columns_to_read = c("E Mail")
+datanew <- fread("Email Records.csv", select = columns_to_read)
+datanew <- datanew[1:10000,]
+datanew[, First_Name := str_extract(`E Mail`, "^[^.]+")]
+datanew[, Last_Name := str_extract(`E Mail`, "(?<=\\.)[^@]+")]
+datanew[, Domain := str_extract(`E Mail`, "(?<=@)[^.]+\\..+")]
 
 Rprof(NULL)
 summaryRprof()
